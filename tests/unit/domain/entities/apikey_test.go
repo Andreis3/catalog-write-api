@@ -11,7 +11,7 @@ import (
 	"github.com/andreis3/catalog-write-api/internal/domain/entities"
 )
 
-var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: APIKEY.GO", func() {
+var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: APIKEY", func() {
 	Describe("#Validate", func() {
 		Context("when invalid apikey entity", func() {
 			It("should return an error when apikey is empty", func() {
