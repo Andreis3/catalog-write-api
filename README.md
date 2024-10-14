@@ -1,6 +1,6 @@
 
 
-<h1 align="center">foodtosave-case</h1>
+<h1 align="center">catalog-write-api</h1>
 
 <p align="center">
 	<img src="docs/images/golang.jpg" width="150" height="150"/>
