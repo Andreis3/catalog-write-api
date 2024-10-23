@@ -13,9 +13,38 @@ import (
 
 var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: APIKEY", func() {
 	Describe("#Validate", func() {
-		Context("when invalid apikey entity", func() {
+		Context("success cases", func() {
+			It("should not return an error when status is active", func() {
+				apikey := entities.ApiKeyBuilder().SetID(1).SetName("apikey").Activate().Build()
+
+				err := apikey.Validate()
+
+				Expect(err.Errors()).To(BeNil())
+				Expect(err.HasErrors()).To(BeFalse())
+				Expect(err.ListErrors()).To(BeEmpty())
+			})
+
+			It("should not return an error when status is inactive", func() {
+				apikey := entities.ApiKeyBuilder().SetID(1).SetName("apikey").Deactivate().Build()
+
+				err := apikey.Validate()
+
+				Expect(err.Errors()).To(BeNil())
+				Expect(err.HasErrors()).To(BeFalse())
+				Expect(err.ListErrors()).To(BeEmpty())
+			})
+
+			It("should return method Get is called", func() {
+				apikey := entities.ApiKeyBuilder().SetID(1).SetName("apikey").Activate().Build()
+
+				Expect(apikey.GetID()).To(Equal(int64(1)))
+				Expect(apikey.GetName()).To(Equal("apikey"))
+				Expect(apikey.GetStatus()).To(Equal("active"))
+			})
+		})
+		Context("error cases", func() {
 			It("should return an error when apikey is empty", func() {
-				apikey := entities.Builder().Build()
+				apikey := entities.ApiKeyBuilder().Build()
 
 				err := apikey.Validate()
 
@@ -23,41 +52,32 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: APIKEY", func() {
 				Expect(err.Errors()).To(HaveLen(2))
 				Expect(err.Errors()).To(ContainElement(errors.New("name: is required")))
 				Expect(err.Errors()).To(ContainElement(errors.New("status: is required")))
-				Expect(err.Error()).To(ContainSubstring("name: is required"))
-				Expect(err.Error()).To(ContainSubstring("status: is required"))
+				Expect(err.ListErrors()).To(ContainSubstring("name: is required"))
+				Expect(err.ListErrors()).To(ContainSubstring("status: is required"))
 			})
 
 			It("should return an error when apikey status is invalid", func() {
-				apikey := entities.Builder().SetID(1).SetName("apikey").SetStatus("invalid").Build()
+				apikey := entities.ApiKeyBuilder().SetID(1).SetName("apikey").SetStatus("invalid").Build()
 
 				err := apikey.Validate()
 
 				Expect(err).NotTo(BeNil())
 				Expect(err.Errors()).To(HaveLen(1))
 				Expect(err.Errors()).To(ContainElement(errors.New("status: is invalid, valid values are active or inactive")))
-				Expect(err.Error()).To(ContainSubstring("status: is invalid, valid values are active or inactive"))
+				Expect(err.ListErrors()).To(ContainSubstring("status: is invalid, valid values are active or inactive"))
 			})
-		})
-		Context("when valid apikey entity", func() {
-			It("should not return an error when status is active", func() {
-				apikey := entities.Builder().SetID(1).SetName("apikey").SetStatusActive().Build()
+
+			It("should return an error when name is less than 3 characters", func() {
+				apikey := entities.ApiKeyBuilder().SetID(1).SetName("a").Activate().Build()
 
 				err := apikey.Validate()
 
-				Expect(err.Errors()).To(BeNil())
-				Expect(err.HasErrors()).To(BeFalse())
-				Expect(err.Error()).To(BeEmpty())
-			})
-
-			It("should not return an error when status is inactive", func() {
-				apikey := entities.Builder().SetID(1).SetName("apikey").SetStatusInactive().Build()
-
-				err := apikey.Validate()
-
-				Expect(err.Errors()).To(BeNil())
-				Expect(err.HasErrors()).To(BeFalse())
-				Expect(err.Error()).To(BeEmpty())
+				Expect(err).NotTo(BeNil())
+				Expect(err.Errors()).To(HaveLen(1))
+				Expect(err.Errors()).To(ContainElement(errors.New("name: is too short, minimum length is 3 characters")))
+				Expect(err.ListErrors()).To(ContainSubstring("name: is too short, minimum length is 3 characters"))
 			})
 		})
+
 	})
 })

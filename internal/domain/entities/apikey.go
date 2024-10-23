@@ -1,7 +1,6 @@
 package entities
 
 import (
-	"errors"
 	"slices"
 
 	err "github.com/andreis3/catalog-write-api/internal/domain/errors"
@@ -15,38 +14,50 @@ const (
 var APIKeyStatus = [...]string{ACTIVE, INACTIVE}
 
 type APIKey struct {
-	ID     int64
-	Name   string
-	Status string
+	id     int64
+	name   string
+	status string
 	err.EntityErrors
 }
 
-func Builder() *APIKey {
+func ApiKeyBuilder() *APIKey {
 	return &APIKey{}
 }
 
+func (a *APIKey) GetID() int64 {
+	return a.id
+}
+
+func (a *APIKey) GetName() string {
+	return a.name
+}
+
+func (a *APIKey) GetStatus() string {
+	return a.status
+}
+
 func (a *APIKey) SetID(id int64) *APIKey {
-	a.ID = id
+	a.id = id
 	return a
 }
 
 func (a *APIKey) SetName(name string) *APIKey {
-	a.Name = name
+	a.name = name
 	return a
 }
 
 func (a *APIKey) SetStatus(status string) *APIKey {
-	a.Status = status
+	a.status = status
 	return a
 }
 
-func (a *APIKey) SetStatusActive() *APIKey {
-	a.Status = ACTIVE
+func (a *APIKey) Activate() *APIKey {
+	a.status = ACTIVE
 	return a
 }
 
-func (a *APIKey) SetStatusInactive() *APIKey {
-	a.Status = INACTIVE
+func (a *APIKey) Deactivate() *APIKey {
+	a.status = INACTIVE
 	return a
 }
 
@@ -55,14 +66,15 @@ func (a *APIKey) Build() *APIKey {
 }
 
 func (a *APIKey) Validate() *err.EntityErrors {
-	if a.Name == "" {
-		a.Add(errors.New("name: is required"))
+	if a.name == "" {
+		a.Add("name: is required")
+	} else if len(a.name) < 3 {
+		a.Add("name: is too short, minimum length is 3 characters")
 	}
-	if a.Status == "" {
-		a.Add(errors.New("status: is required"))
-	}
-	if a.Status != "" && !slices.Contains(APIKeyStatus[:], a.Status) {
-		a.Add(errors.New("status: is invalid, valid values are active or inactive"))
+	if a.status == "" {
+		a.Add("status: is required")
+	} else if !slices.Contains(APIKeyStatus[:], a.status) {
+		a.Add("status: is invalid, valid values are active or inactive")
 	}
 	return &a.EntityErrors
 }
