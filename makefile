@@ -2,11 +2,10 @@ run-app:
 	@echo "Running app"
 	@go run cmd/server/main.go
 unit:
-	@go test ./tests/unit/... --tags=unit -v
+	@go test ./tests/unit/... --tags=unit
 
 unit-verbose:
-	ginkgo -r --race --tags=unit -v
-
+	ginkgo -r --race --tags=unit --randomize-all --randomize-suites --fail-on-pending
 unit-cover:
 	@go test ./tests/unit/... -coverpkg ./internal/... --tags=unit -v
 
