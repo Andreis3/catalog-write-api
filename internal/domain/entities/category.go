@@ -1,14 +1,15 @@
 package entities
 
-import err "github.com/andreis3/catalog-write-api/internal/domain/errors"
+import "github.com/andreis3/catalog-write-api/internal/domain/errors"
 
 type Category struct {
 	id                int64
+	apiKeyID          int64
+	parentID          int64
 	categoryKey       string
 	description       string
-	parentID          int64
 	parentCategoryKey string
-	err.EntityErrors
+	errors.EntityErrors
 }
 
 func CategoryBuilder() *Category {
@@ -33,6 +34,10 @@ func (c *Category) GetParentID() int64 {
 
 func (c *Category) GetParentCategoryKey() string {
 	return c.parentCategoryKey
+}
+
+func (c *Category) GetAPIKeyID() int64 {
+	return c.apiKeyID
 }
 
 func (c *Category) SetID(id int64) *Category {
@@ -60,11 +65,16 @@ func (c *Category) SetParentCategoryKey(parentCategoryKey string) *Category {
 	return c
 }
 
+func (c *Category) SetAPIKeyID(apiKeyID int64) *Category {
+	c.apiKeyID = apiKeyID
+	return c
+}
+
 func (c *Category) Build() *Category {
 	return c
 }
 
-func (c *Category) Validate() *err.EntityErrors {
+func (c *Category) Validate() *errors.EntityErrors {
 	if c.categoryKey == "" {
 		c.Add("category_key: is required")
 	}

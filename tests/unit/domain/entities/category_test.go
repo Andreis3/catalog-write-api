@@ -47,12 +47,14 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: CATEGORY", func() {
 				category := entities.CategoryBuilder().
 					SetID(1).
 					SetCategoryKey("categoryKey").
+					SetAPIKeyID(1).
 					SetDescription("description").
 					SetParentID(1).
 					SetParentCategoryKey("parentCategoryKey").
 					Build()
 
 				Expect(category.GetID()).To(Equal(int64(1)))
+				Expect(category.GetAPIKeyID()).To(Equal(int64(1)))
 				Expect(category.GetCategoryKey()).To(Equal("categoryKey"))
 				Expect(category.GetDescription()).To(Equal("description"))
 				Expect(category.GetParentID()).To(Equal(int64(1)))

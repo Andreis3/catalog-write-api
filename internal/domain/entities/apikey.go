@@ -3,7 +3,7 @@ package entities
 import (
 	"slices"
 
-	err "github.com/andreis3/catalog-write-api/internal/domain/errors"
+	"github.com/andreis3/catalog-write-api/internal/domain/errors"
 )
 
 const (
@@ -17,7 +17,7 @@ type APIKey struct {
 	id     int64
 	name   string
 	status string
-	err.EntityErrors
+	errors.EntityErrors
 }
 
 func ApiKeyBuilder() *APIKey {
@@ -65,7 +65,7 @@ func (a *APIKey) Build() *APIKey {
 	return a
 }
 
-func (a *APIKey) Validate() *err.EntityErrors {
+func (a *APIKey) Validate() *errors.EntityErrors {
 	if a.name == "" {
 		a.Add("name: is required")
 	} else if len(a.name) < 3 {

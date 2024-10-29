@@ -1,6 +1,6 @@
 package entities
 
-type SkuOffer struct {
+type Offer struct {
 	ID           int64
 	ExternalID   string
 	SkuID        int64
