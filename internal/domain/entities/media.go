@@ -1,6 +1,10 @@
 package entities
 
-import "github.com/andreis3/catalog-write-api/internal/domain/errors"
+import (
+	"slices"
+
+	"github.com/andreis3/catalog-write-api/internal/domain/errors"
+)
 
 const (
 	IMAGE = "image"
@@ -94,19 +98,21 @@ func (m *Media) Build() *Media {
 func (m *Media) Validate() *errors.EntityErrors {
 
 	if m.url == "" {
-		m.Add("url: url cannot be empty")
+		m.Add("url: cannot be empty")
 	}
 
 	if m.mediaType == "" {
-		m.Add("mediaType: mediaType cannot be empty")
+		m.Add("media_type: cannot be empty")
+	} else if !slices.Contains(MediaType[:], m.mediaType) {
+		m.Add("media_type: media type is invalid, valid values are image or video")
 	}
 
 	if m.description == "" {
-		m.Add("description: description cannot be empty")
+		m.Add("description: cannot be empty")
 	}
 
 	if m.index <= 0 {
-		m.Add("index: index cannot be less than 0")
+		m.Add("index: cannot be less than 0")
 	}
 
 	return &m.EntityErrors
