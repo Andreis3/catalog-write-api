@@ -15,44 +15,45 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: COORDINATE", func() {
 	Describe("#Validate", func() {
 		Context("success cases", func() {
 			It("should not return an error when send all fields", func() {
-				coordinate := entities.CoordinateBuilder().
+				entity := entities.CoordinateBuilder().
 					SetID(1).
 					SetOffersID(1).
 					SetLatitude(-29.69050937064539).
 					SetLongitude(-51.23978484448051).
 					Build()
 
-				err := coordinate.Validate()
+				err := entity.Validate()
 
 				Expect(err.Errors()).To(BeNil())
 				Expect(err.HasErrors()).To(BeFalse())
 				Expect(err.ListErrors()).To(BeEmpty())
 			})
+
 			It("should return method Get is called", func() {
-				coordinate := entities.CoordinateBuilder().
+				entity := entities.CoordinateBuilder().
 					SetID(1).
 					SetOffersID(1).
 					SetLatitude(-29.69050937064539).
 					SetLongitude(-51.23978484448051).
 					Build()
 
-				Expect(coordinate.GetID()).To(Equal(int64(1)))
-				Expect(coordinate.GetOffersID()).To(Equal(int64(1)))
-				Expect(coordinate.GetLatitude()).To(Equal(-29.69050937064539))
-				Expect(coordinate.GetLongitude()).To(Equal(-51.23978484448051))
+				Expect(entity.GetID()).To(Equal(int64(1)))
+				Expect(entity.GetOffersID()).To(Equal(int64(1)))
+				Expect(entity.GetLatitude()).To(Equal(-29.69050937064539))
+				Expect(entity.GetLongitude()).To(Equal(-51.23978484448051))
 			})
 		})
 
 		Context("error cases", func() {
 			It("should return an error when invalid latitude and longitude", func() {
-				coordinate := entities.CoordinateBuilder().
+				entity := entities.CoordinateBuilder().
 					SetID(1).
 					SetOffersID(1).
 					SetLatitude(-180.1).
 					SetLongitude(-200.1).
 					Build()
 
-				err := coordinate.Validate()
+				err := entity.Validate()
 
 				Expect(err.Errors()).NotTo(BeNil())
 				Expect(err.HasErrors()).To(BeTrue())
@@ -63,13 +64,13 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: COORDINATE", func() {
 			})
 
 			It("should return an error when latitude not set and longitude is set", func() {
-				coordinate := entities.CoordinateBuilder().
+				entity := entities.CoordinateBuilder().
 					SetID(1).
 					SetOffersID(1).
 					SetLongitude(-51.23978484448051).
 					Build()
 
-				err := coordinate.Validate()
+				err := entity.Validate()
 
 				Expect(err.Errors()).NotTo(BeNil())
 				Expect(err.HasErrors()).To(BeTrue())
@@ -78,13 +79,13 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: COORDINATE", func() {
 			})
 
 			It("should return an error when latitude is set and longitude not set", func() {
-				coordinate := entities.CoordinateBuilder().
+				entity := entities.CoordinateBuilder().
 					SetID(1).
 					SetOffersID(1).
 					SetLatitude(-29.69050937064539).
 					Build()
 
-				err := coordinate.Validate()
+				err := entity.Validate()
 
 				Expect(err.Errors()).NotTo(BeNil())
 				Expect(err.HasErrors()).To(BeTrue())

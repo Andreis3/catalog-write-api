@@ -15,14 +15,14 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: INSTALLMENT", func() {
 	Describe("#Validate", func() {
 		Context("success cases", func() {
 			It("should not return an error count and price more 0", func() {
-				installment := entities.InstallmentBuilder().
+				entity := entities.InstallmentBuilder().
 					SetID(1).
 					SetOrderID(1).
 					SetCount(1).
 					SetPrice(1).
 					Build()
 
-				err := installment.Validate()
+				err := entity.Validate()
 
 				Expect(err.Errors()).To(BeNil())
 				Expect(err.HasErrors()).To(BeFalse())
@@ -30,14 +30,14 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: INSTALLMENT", func() {
 			})
 
 			It("should not return an error count and price equal 0", func() {
-				installment := entities.InstallmentBuilder().
+				entity := entities.InstallmentBuilder().
 					SetID(1).
 					SetOrderID(1).
 					SetCount(0).
 					SetPrice(0).
 					Build()
 
-				err := installment.Validate()
+				err := entity.Validate()
 
 				Expect(err.Errors()).To(BeNil())
 				Expect(err.HasErrors()).To(BeFalse())
@@ -46,14 +46,14 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: INSTALLMENT", func() {
 		})
 		Context("error cases", func() {
 			It("should return an error count and price less than 0", func() {
-				installment := entities.InstallmentBuilder().
+				entity := entities.InstallmentBuilder().
 					SetID(1).
 					SetOrderID(1).
 					SetCount(-1).
 					SetPrice(-1).
 					Build()
 
-				err := installment.Validate()
+				err := entity.Validate()
 
 				Expect(err.Errors()).ToNot(BeNil())
 				Expect(err.HasErrors()).To(BeTrue())
@@ -65,14 +65,14 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: INSTALLMENT", func() {
 			})
 
 			It("should return an error when count is more than 12", func() {
-				installment := entities.InstallmentBuilder().
+				entity := entities.InstallmentBuilder().
 					SetID(1).
 					SetOrderID(1).
 					SetCount(13).
 					SetPrice(1).
 					Build()
 
-				err := installment.Validate()
+				err := entity.Validate()
 
 				Expect(err.Errors()).ToNot(BeNil())
 				Expect(err.HasErrors()).To(BeTrue())

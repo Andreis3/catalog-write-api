@@ -15,9 +15,9 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: APIKEY", func() {
 	Describe("#Validate", func() {
 		Context("success cases", func() {
 			It("should not return an error when status is active", func() {
-				apikey := entities.ApiKeyBuilder().SetID(1).SetName("apikey").Activate().Build()
+				entity := entities.ApiKeyBuilder().SetID(1).SetName("entity").Activate().Build()
 
-				err := apikey.Validate()
+				err := entity.Validate()
 
 				Expect(err.Errors()).To(BeNil())
 				Expect(err.HasErrors()).To(BeFalse())
@@ -25,9 +25,9 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: APIKEY", func() {
 			})
 
 			It("should not return an error when status is inactive", func() {
-				apikey := entities.ApiKeyBuilder().SetID(1).SetName("apikey").Deactivate().Build()
+				entity := entities.ApiKeyBuilder().SetID(1).SetName("apikey").Deactivate().Build()
 
-				err := apikey.Validate()
+				err := entity.Validate()
 
 				Expect(err.Errors()).To(BeNil())
 				Expect(err.HasErrors()).To(BeFalse())
@@ -35,11 +35,11 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: APIKEY", func() {
 			})
 
 			It("should return method Get is called", func() {
-				apikey := entities.ApiKeyBuilder().SetID(1).SetName("apikey").Activate().Build()
+				entity := entities.ApiKeyBuilder().SetID(1).SetName("apikey").Activate().Build()
 
-				Expect(apikey.GetID()).To(Equal(int64(1)))
-				Expect(apikey.GetName()).To(Equal("apikey"))
-				Expect(apikey.GetStatus()).To(Equal("active"))
+				Expect(entity.GetID()).To(Equal(int64(1)))
+				Expect(entity.GetName()).To(Equal("apikey"))
+				Expect(entity.GetStatus()).To(Equal("active"))
 			})
 		})
 		Context("error cases", func() {

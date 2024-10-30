@@ -15,7 +15,7 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: CATEGORY", func() {
 	Describe("#Validate", func() {
 		Context("success cases", func() {
 			It("should not return an error when send all fields", func() {
-				category := entities.CategoryBuilder().
+				entity := entities.CategoryBuilder().
 					SetID(1).
 					SetCategoryKey("categoryKey").
 					SetDescription("description").
@@ -23,7 +23,7 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: CATEGORY", func() {
 					SetParentCategoryKey("parentCategoryKey").
 					Build()
 
-				err := category.Validate()
+				err := entity.Validate()
 
 				Expect(err.Errors()).To(BeNil())
 				Expect(err.HasErrors()).To(BeFalse())
@@ -31,12 +31,12 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: CATEGORY", func() {
 			})
 
 			It("should not return an error when send only required fields", func() {
-				category := entities.CategoryBuilder().
+				entity := entities.CategoryBuilder().
 					SetCategoryKey("categoryKey").
 					SetDescription("description").
 					Build()
 
-				err := category.Validate()
+				err := entity.Validate()
 
 				Expect(err.Errors()).To(BeNil())
 				Expect(err.HasErrors()).To(BeFalse())
@@ -44,7 +44,7 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: CATEGORY", func() {
 			})
 
 			It("should return method Get is called", func() {
-				category := entities.CategoryBuilder().
+				entity := entities.CategoryBuilder().
 					SetID(1).
 					SetCategoryKey("categoryKey").
 					SetAPIKeyID(1).
@@ -53,23 +53,23 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: CATEGORY", func() {
 					SetParentCategoryKey("parentCategoryKey").
 					Build()
 
-				Expect(category.GetID()).To(Equal(int64(1)))
-				Expect(category.GetAPIKeyID()).To(Equal(int64(1)))
-				Expect(category.GetCategoryKey()).To(Equal("categoryKey"))
-				Expect(category.GetDescription()).To(Equal("description"))
-				Expect(category.GetParentID()).To(Equal(int64(1)))
-				Expect(category.GetParentCategoryKey()).To(Equal("parentCategoryKey"))
+				Expect(entity.GetID()).To(Equal(int64(1)))
+				Expect(entity.GetAPIKeyID()).To(Equal(int64(1)))
+				Expect(entity.GetCategoryKey()).To(Equal("categoryKey"))
+				Expect(entity.GetDescription()).To(Equal("description"))
+				Expect(entity.GetParentID()).To(Equal(int64(1)))
+				Expect(entity.GetParentCategoryKey()).To(Equal("parentCategoryKey"))
 			})
 		})
 		Context("error cases", func() {
 			It("should return an error when not send required fields", func() {
-				category := entities.CategoryBuilder().
+				entity := entities.CategoryBuilder().
 					SetID(1).
 					SetParentID(1).
 					SetParentCategoryKey("parentCategoryKey").
 					Build()
 
-				err := category.Validate()
+				err := entity.Validate()
 
 				Expect(err).NotTo(BeNil())
 				Expect(err.Errors()).To(HaveLen(2))
