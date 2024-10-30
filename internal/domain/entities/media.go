@@ -90,3 +90,24 @@ func (m *Media) SetMediaTypeVideo() *Media {
 func (m *Media) Build() *Media {
 	return m
 }
+
+func (m *Media) Validate() *errors.EntityErrors {
+
+	if m.url == "" {
+		m.Add("url: url cannot be empty")
+	}
+
+	if m.mediaType == "" {
+		m.Add("mediaType: mediaType cannot be empty")
+	}
+
+	if m.description == "" {
+		m.Add("description: description cannot be empty")
+	}
+
+	if m.index <= 0 {
+		m.Add("index: index cannot be less than 0")
+	}
+
+	return &m.EntityErrors
+}
