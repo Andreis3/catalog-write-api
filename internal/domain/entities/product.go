@@ -120,11 +120,11 @@ func (p *Product) Validate() *errors.EntityErrors {
 	p.Add(p.CheckEmptyField(p.name, "name"))
 	p.Add(p.CheckEmptyField(p.description, "description"))
 	p.Add(p.CheckEmptyField(p.brand, "brand"))
+	p.Add(p.CheckEmptyField(p.status, "status"))
 	p.Add(p.CheckIsValidStatus(p.status, "status", ProductStatus[:]))
 	p.Add(p.CheckMaxCharacters(p.externalID, "external_id", 50))
 	p.Add(p.CheckMaxCharacters(p.name, "name", 50))
 	p.Add(p.CheckMaxCharacters(p.description, "description", 255))
 	p.Add(p.CheckMaxCharacters(p.brand, "brand", 100))
-
 	return &p.EntityErrors
 }
