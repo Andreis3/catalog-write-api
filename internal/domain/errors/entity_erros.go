@@ -1,7 +1,6 @@
 package errors
 
 import (
-	"errors"
 	"strings"
 	"sync"
 )
@@ -11,10 +10,13 @@ type EntityErrors struct {
 	errors []error
 }
 
-func (e *EntityErrors) Add(err string) {
+func (e *EntityErrors) Add(err error) {
 	e.mu.Lock()
 	defer e.mu.Unlock()
-	e.errors = append(e.errors, errors.New(err))
+	if err == nil {
+		return
+	}
+	e.errors = append(e.errors, err)
 }
 
 func (e *EntityErrors) HasErrors() bool {
@@ -31,12 +33,10 @@ func (e *EntityErrors) Errors() []error {
 
 func (e *EntityErrors) ListErrors() string {
 	e.mu.Lock()
-	errs := e.errors
-	e.mu.Unlock()
-	var sb strings.Builder
-	for _, err := range errs {
-		sb.WriteString(err.Error())
-		sb.WriteString("\n")
+	defer e.mu.Unlock()
+	var errs []string
+	for _, err := range e.errors {
+		errs = append(errs, err.Error())
 	}
-	return sb.String()
+	return strings.Join(errs, "\n")
 }

@@ -1,8 +1,6 @@
 package entities
 
 import (
-	"slices"
-
 	"github.com/andreis3/catalog-write-api/internal/domain/errors"
 )
 
@@ -21,6 +19,7 @@ type Media struct {
 	description string
 	index       int
 	errors.EntityErrors
+	errors.ValidateFields
 }
 
 func MediaBuilder() *Media {
@@ -96,24 +95,11 @@ func (m *Media) Build() *Media {
 }
 
 func (m *Media) Validate() *errors.EntityErrors {
-
-	if m.url == "" {
-		m.Add("url: cannot be empty")
-	}
-
-	if m.mediaType == "" {
-		m.Add("media_type: cannot be empty")
-	} else if !slices.Contains(MediaType[:], m.mediaType) {
-		m.Add("media_type: media type is invalid, valid values are image or video")
-	}
-
-	if m.description == "" {
-		m.Add("description: cannot be empty")
-	}
-
-	if m.index <= 0 {
-		m.Add("index: cannot be less than 0")
-	}
-
+	m.Add(m.CheckEmptyField(m.url, "url"))
+	m.Add(m.CheckEmptyField(m.mediaType, "media_type"))
+	m.Add(m.CheckIsValidStatus(m.mediaType, "media_type", MediaType[:]))
+	m.Add(m.CheckEmptyField(m.description, "description"))
+	m.Add(m.CheckNegativeField(m.index, "index"))
+	m.Add(m.CheckFieldEqualZero(m.index, "index"))
 	return &m.EntityErrors
 }

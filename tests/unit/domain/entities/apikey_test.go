@@ -63,8 +63,8 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: APIKEY", func() {
 
 				Expect(err).NotTo(BeNil())
 				Expect(err.Errors()).To(HaveLen(1))
-				Expect(err.Errors()).To(ContainElement(errors.New("status: is invalid, valid values are active or inactive")))
-				Expect(err.ListErrors()).To(ContainSubstring("status: is invalid, valid values are active or inactive"))
+				Expect(err.Errors()).To(ContainElement(errors.New("status: is invalid, valid values are [active inactive]")))
+				Expect(err.ListErrors()).To(ContainSubstring("status: is invalid, valid values are [active inactive]"))
 			})
 
 			It("should return an error when name is less than 3 characters", func() {
@@ -74,8 +74,8 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: APIKEY", func() {
 
 				Expect(err).NotTo(BeNil())
 				Expect(err.Errors()).To(HaveLen(1))
-				Expect(err.Errors()).To(ContainElement(errors.New("name: is too short, minimum length is 3 characters")))
-				Expect(err.ListErrors()).To(ContainSubstring("name: is too short, minimum length is 3 characters"))
+				Expect(err.Errors()).To(ContainElement(errors.New("name: limit min of the characters not less than 3")))
+				Expect(err.ListErrors()).To(ContainSubstring("name: limit min of the characters not less than 3"))
 			})
 		})
 

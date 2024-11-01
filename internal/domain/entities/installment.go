@@ -5,9 +5,10 @@ import "github.com/andreis3/catalog-write-api/internal/domain/errors"
 type Installment struct {
 	id      int64
 	orderID int64
-	count   int64
+	count   int
 	price   float64
 	errors.EntityErrors
+	errors.ValidateFields
 }
 
 func InstallmentBuilder() *Installment {
@@ -22,7 +23,7 @@ func (i *Installment) GetOrderID() int64 {
 	return i.orderID
 }
 
-func (i *Installment) GetCount() int64 {
+func (i *Installment) GetCount() int {
 	return i.count
 }
 
@@ -40,7 +41,7 @@ func (i *Installment) SetOrderID(orderID int64) *Installment {
 	return i
 }
 
-func (i *Installment) SetCount(count int64) *Installment {
+func (i *Installment) SetCount(count int) *Installment {
 	i.count = count
 	return i
 }
@@ -55,18 +56,9 @@ func (i *Installment) Build() *Installment {
 }
 
 func (i *Installment) Validate() *errors.EntityErrors {
-	if i.price <= -1 {
-		i.Add("price: price cannot be a negative number")
-	}
-
-	if i.count <= -1 {
-		i.Add("count: count cannot be a negative number")
-	}
-
-	if i.count > 12 {
-		i.Add("count: count cannot exceed 12")
-	}
-
+	i.Add(i.CheckNegativeField(i.price, "price"))
+	i.Add(i.CheckNegativeField(i.count, "count"))
+	i.Add(i.CheckExceedField(i.count, "count", 12))
 	return &i.EntityErrors
 
 }

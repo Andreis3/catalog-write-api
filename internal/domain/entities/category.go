@@ -10,6 +10,7 @@ type Category struct {
 	description       string
 	parentCategoryKey string
 	errors.EntityErrors
+	errors.ValidateFields
 }
 
 func CategoryBuilder() *Category {
@@ -75,13 +76,7 @@ func (c *Category) Build() *Category {
 }
 
 func (c *Category) Validate() *errors.EntityErrors {
-	if c.categoryKey == "" {
-		c.Add("category_key: is required")
-	}
-
-	if c.description == "" {
-		c.Add("description: is required")
-	}
-
+	c.Add(c.CheckEmptyField(c.categoryKey, "category_key"))
+	c.Add(c.CheckEmptyField(c.description, "description"))
 	return &c.EntityErrors
 }

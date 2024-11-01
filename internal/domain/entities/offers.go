@@ -1,9 +1,6 @@
 package entities
 
 import (
-	"slices"
-	"strings"
-
 	"github.com/andreis3/catalog-write-api/internal/domain/errors"
 )
 
@@ -28,6 +25,7 @@ type Offer struct {
 	salesChannel string
 	seller       string
 	errors.EntityErrors
+	errors.ValidateFields
 }
 
 func OfferBuilder() *Offer {
@@ -152,36 +150,17 @@ func (o *Offer) Build() *Offer {
 	return o
 }
 
-func (o *Offer) Validate() *Offer {
-	if o.externalID == "" {
-		o.Add("external_id: ExternalID is required")
-	}
-	if o.name == "" {
-		o.Add("name: Name is required")
-	}
-	if strings.Count(o.name, "") > 100 {
-		o.Add("name: Name must have a maximum of 100 characters")
-	}
-	if o.description == "" {
-		o.Add("description: Description is required")
-	}
-	if strings.Count(o.description, "") > 255 {
-		o.Add("description: Description must have a maximum of 255 characters")
-	}
-	if o.price < 0 {
-		o.Add("price: Price is required")
-	}
-	if o.oldPrice < 0 {
-		o.Add("old_price: Old price is required")
-	}
-	if o.stock < 0 {
-		o.Add("stock: Stock must be greater than or equal to 0")
-	}
-	if o.status == "" {
-		o.Add("status: Status is required")
-	} else if !slices.Contains(OfferStatus[:], o.status) {
-		o.Add("status: Invalid status")
-	}
+func (o *Offer) Validate() *errors.EntityErrors {
+	o.Add(o.CheckEmptyField(o.externalID, "external_id"))
+	o.Add(o.CheckEmptyField(o.name, "name"))
+	o.Add(o.CheckEmptyField(o.description, "description"))
+	o.Add(o.CheckMaxCharacters(o.name, "name", 100))
+	o.Add(o.CheckMaxCharacters(o.description, "description", 255))
+	o.Add(o.CheckNegativeField(o.price, "price"))
+	o.Add(o.CheckNegativeField(o.oldPrice, "old_price"))
+	o.Add(o.CheckNegativeField(o.stock, "stock"))
+	o.Add(o.CheckEmptyField(o.status, "status"))
+	o.Add(o.CheckIsValidStatus(o.status, "status", OfferStatus[:]))
 
-	return o
+	return &o.EntityErrors
 }

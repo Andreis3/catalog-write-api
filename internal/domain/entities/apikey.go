@@ -1,8 +1,6 @@
 package entities
 
 import (
-	"slices"
-
 	"github.com/andreis3/catalog-write-api/internal/domain/errors"
 )
 
@@ -18,6 +16,7 @@ type APIKey struct {
 	name   string
 	status string
 	errors.EntityErrors
+	errors.ValidateFields
 }
 
 func ApiKeyBuilder() *APIKey {
@@ -66,15 +65,9 @@ func (a *APIKey) Build() *APIKey {
 }
 
 func (a *APIKey) Validate() *errors.EntityErrors {
-	if a.name == "" {
-		a.Add("name: is required")
-	} else if len(a.name) < 3 {
-		a.Add("name: is too short, minimum length is 3 characters")
-	}
-	if a.status == "" {
-		a.Add("status: is required")
-	} else if !slices.Contains(APIKeyStatus[:], a.status) {
-		a.Add("status: is invalid, valid values are active or inactive")
-	}
+	a.Add(a.CheckEmptyField(a.name, "name"))
+	a.Add(a.CheckMinCharacters(a.name, "name", 3))
+	a.Add(a.CheckEmptyField(a.status, "status"))
+	a.Add(a.CheckIsValidStatus(a.status, "status", APIKeyStatus[:]))
 	return &a.EntityErrors
 }

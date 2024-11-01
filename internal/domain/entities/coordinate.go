@@ -10,6 +10,7 @@ type Coordinate struct {
 	latitude  float64
 	longitude float64
 	errors.EntityErrors
+	errors.ValidateFields
 }
 
 func CoordinateBuilder() *Coordinate {
@@ -57,21 +58,10 @@ func (c *Coordinate) Build() *Coordinate {
 }
 
 func (c *Coordinate) Validate() *errors.EntityErrors {
-	if c.latitude != 0 && c.latitude < -90 || c.latitude > 90 {
-		c.Add("latitude: must be between -90 and +90 degrees")
-	}
-
-	if c.longitude != 0 && c.longitude < -180 || c.longitude > 180 {
-		c.Add("longitude: must be between -180 and +180 degrees")
-	}
-
-	if c.latitude == 0 && c.longitude != 0 {
-		c.Add("latitude: must be set if longitude is set")
-	}
-
-	if c.latitude != 0 && c.longitude == 0 {
-		c.Add("longitude: must be set if latitude is set")
-	}
+	c.Add(c.CheckLatitudeRange(c.latitude))
+	c.Add(c.CheckLongitudeRange(c.longitude))
+	c.Add(c.CheckSetField(c.latitude, c.longitude, "latitude", "longitude"))
+	c.Add(c.CheckSetField(c.longitude, c.latitude, "longitude", "latitude"))
 
 	return &c.EntityErrors
 }
