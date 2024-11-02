@@ -14,8 +14,9 @@ func Test_EntitiesSuite(t *testing.T) {
 
 	suiteConfig.SkipStrings = []string{"SKIPPED", "PENDING", "NEVER-RUN", "SKIP"}
 	reporterConfig.FullTrace = false
-	reporterConfig.Succinct = true
+	reporterConfig.Verbose = true
 
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Entities Validate testes", suiteConfig, reporterConfig)
+	RunSpecs(t, "Entities tests", suiteConfig, reporterConfig)
+
 }

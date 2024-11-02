@@ -13,6 +13,9 @@ type EntityErrors struct {
 func (e *EntityErrors) Add(err error) {
 	e.mu.Lock()
 	defer e.mu.Unlock()
+	if err == nil {
+		return
+	}
 	e.errors = append(e.errors, err)
 }
 
@@ -28,16 +31,12 @@ func (e *EntityErrors) Errors() []error {
 	return e.errors
 }
 
-func (e *EntityErrors) Error() string {
+func (e *EntityErrors) ListErrors() string {
 	e.mu.Lock()
 	defer e.mu.Unlock()
-	return strings.Join(e.ErrorsToString(), "\n")
-}
-
-func (e *EntityErrors) ErrorsToString() []string {
-	errString := make([]string, len(e.errors))
-	for i, err := range e.errors {
-		errString[i] = err.Error()
+	var errs []string
+	for _, err := range e.errors {
+		errs = append(errs, err.Error())
 	}
-	return errString
+	return strings.Join(errs, "\n")
 }
