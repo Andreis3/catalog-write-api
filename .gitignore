@@ -1,3 +1,5 @@
 .env
 .idea
 docs/test-case.txt
+coverage
+coverprofile.out

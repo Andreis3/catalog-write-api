@@ -4,6 +4,8 @@ run-app:
 unit:
 	@go test ./tests/unit/... --tags=unit -v
 
+unit-verbose:
+	ginkgo -r --race --tags=unit --randomize-all --randomize-suites --fail-on-pending
 unit-cover:
 	@go test ./tests/unit/... -coverpkg ./internal/... --tags=unit -v
 

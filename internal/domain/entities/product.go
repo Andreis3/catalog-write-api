@@ -1,63 +1,112 @@
 package entities
 
+import (
+	"github.com/andreis3/catalog-write-api/internal/domain/errors"
+)
+
+const (
+	ENABLED  = "enabled"
+	DISABLED = "disabled"
+)
+
+var ProductStatus = [...]string{ENABLED, DISABLED}
+
 type Product struct {
-	ID          int64
-	ExternalID  string
-	ApikeyID    string
-	Name        string
-	Description string
-	Status      string
-	Brand       string
-	ReleaseDate string
-	Publish     bool
+	id          int64
+	apikeyID    int64
+	externalID  string
+	apikey      string
+	name        string
+	description string
+	status      string
+	brand       string
+	releaseDate string
+	errors.EntityErrors
+	errors.ValidateFields
 }
 
-func NewProductBuilder() *Product {
+func ProductBuilder() *Product {
 	return &Product{}
 }
 
+func (p *Product) GetID() int64 {
+	return p.id
+}
+
+func (p *Product) GetExternalID() string {
+	return p.externalID
+}
+
+func (p *Product) GetApikeyID() int64 {
+	return p.apikeyID
+}
+
+func (p *Product) GetApikey() string {
+	return p.apikey
+}
+
+func (p *Product) GetName() string {
+	return p.name
+}
+
+func (p *Product) GetDescription() string {
+	return p.description
+}
+
+func (p *Product) GetStatus() string {
+	return p.status
+}
+
+func (p *Product) GetBrand() string {
+	return p.brand
+}
+
+func (p *Product) GetReleaseDate() string {
+	return p.releaseDate
+}
+
 func (p *Product) SetID(id int64) *Product {
-	p.ID = id
+	p.id = id
 	return p
 }
 
 func (p *Product) SetExternalID(externalID string) *Product {
-	p.ExternalID = externalID
+	p.externalID = externalID
 	return p
 }
 
-func (p *Product) SetApikeyID(apikeyID string) *Product {
-	p.ApikeyID = apikeyID
+func (p *Product) SetApikeyID(apikeyID int64) *Product {
+	p.apikeyID = apikeyID
+	return p
+}
+
+func (p *Product) SetApikey(apikey string) *Product {
+	p.apikey = apikey
 	return p
 }
 
 func (p *Product) SetName(name string) *Product {
-	p.Name = name
+	p.name = name
 	return p
 }
 
 func (p *Product) SetDescription(description string) *Product {
-	p.Description = description
+	p.description = description
 	return p
 }
 
 func (p *Product) SetStatus(status string) *Product {
-	p.Status = status
+	p.status = status
 	return p
 }
 
 func (p *Product) SetBrand(brand string) *Product {
-	p.Brand = brand
+	p.brand = brand
 	return p
 }
 
 func (p *Product) SetReleaseDate(releaseDate string) *Product {
-	p.ReleaseDate = releaseDate
-	return p
-}
-
-func (p *Product) SetPublish(publish bool) *Product {
-	p.Publish = publish
+	p.releaseDate = releaseDate
 	return p
 }
 
@@ -65,16 +114,17 @@ func (p *Product) Build() *Product {
 	return p
 }
 
-func (p *Product) Facade(input *Product) *Product {
-	return NewProductBuilder().
-		SetID(input.ID).
-		SetExternalID(input.ExternalID).
-		SetApikeyID(input.ApikeyID).
-		SetName(input.Name).
-		SetDescription(input.Description).
-		SetStatus(input.Status).
-		SetBrand(input.Brand).
-		SetReleaseDate(input.ReleaseDate).
-		SetPublish(input.Publish).
-		Build()
+func (p *Product) Validate() *errors.EntityErrors {
+	p.Add(p.CheckEmptyField(p.externalID, "external_id"))
+	p.Add(p.CheckEmptyField(p.apikey, "apikey"))
+	p.Add(p.CheckEmptyField(p.name, "name"))
+	p.Add(p.CheckEmptyField(p.description, "description"))
+	p.Add(p.CheckEmptyField(p.brand, "brand"))
+	p.Add(p.CheckEmptyField(p.status, "status"))
+	p.Add(p.CheckIsValidStatus(p.status, "status", ProductStatus[:]))
+	p.Add(p.CheckMaxCharacters(p.externalID, "external_id", 50))
+	p.Add(p.CheckMaxCharacters(p.name, "name", 50))
+	p.Add(p.CheckMaxCharacters(p.description, "description", 255))
+	p.Add(p.CheckMaxCharacters(p.brand, "brand", 100))
+	return &p.EntityErrors
 }
