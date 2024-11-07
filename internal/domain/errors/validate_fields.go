@@ -16,6 +16,7 @@ const (
 	CANNOT_NEGATIVE                = "cannot be negative"
 	CANNOT_EXCEED                  = "cannot exceed"
 	CANNOT_EQUAL_ZERO              = "cannot less than or equal to zero"
+	MINIMUM_OF_ONE                 = "minimum of 1 %s is required"
 )
 
 type ValidateFields struct{}
@@ -102,6 +103,13 @@ func (v *ValidateFields) CheckNegativeField(field any, name string) error {
 func (v *ValidateFields) CheckExceedField(field int, name string, limit int) error {
 	if field > limit {
 		return fmt.Errorf("%s: %s %d", name, CANNOT_EXCEED, limit)
+	}
+	return nil
+}
+
+func (v *ValidateFields) CheckMinimumOfOne(length int, name string) error {
+	if length == 0 {
+		return fmt.Errorf("%s: %s", name, fmt.Sprintf(MINIMUM_OF_ONE, name))
 	}
 	return nil
 }

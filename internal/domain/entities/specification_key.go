@@ -3,8 +3,9 @@ package entities
 import "github.com/andreis3/catalog-write-api/internal/domain/errors"
 
 type SpecificationKey struct {
-	id  int64
-	key string
+	id       int64
+	apiKeyID int64
+	key      string
 	errors.EntityErrors
 	errors.ValidateFields
 }
@@ -21,6 +22,10 @@ func (s *SpecificationKey) GetKey() string {
 	return s.key
 }
 
+func (s *SpecificationKey) GetAPIKeyID() int64 {
+	return s.apiKeyID
+}
+
 func (s *SpecificationKey) SetID(id int64) *SpecificationKey {
 	s.id = id
 	return s
@@ -28,6 +33,11 @@ func (s *SpecificationKey) SetID(id int64) *SpecificationKey {
 
 func (s *SpecificationKey) SetKey(key string) *SpecificationKey {
 	s.key = key
+	return s
+}
+
+func (s *SpecificationKey) SetAPIKeyID(apiKeyID int64) *SpecificationKey {
+	s.apiKeyID = apiKeyID
 	return s
 }
 

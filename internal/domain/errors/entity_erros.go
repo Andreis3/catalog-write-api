@@ -1,6 +1,7 @@
 package errors
 
 import (
+	"fmt"
 	"strings"
 	"sync"
 )
@@ -39,4 +40,24 @@ func (e *EntityErrors) ListErrors() string {
 		errs = append(errs, err.Error())
 	}
 	return strings.Join(errs, "\n")
+}
+
+func (e *EntityErrors) MergeSlice(index int, field string, childErrors *EntityErrors) {
+	e.mu.Lock()
+	defer e.mu.Unlock()
+	if childErrors.HasErrors() {
+		for _, err := range childErrors.Errors() {
+			e.errors = append(e.errors, fmt.Errorf(`%s[%d].%s: %s`, field, index, field, err))
+		}
+	}
+}
+
+func (e *EntityErrors) Merge(field string, childErrors *EntityErrors) {
+	e.mu.Lock()
+	defer e.mu.Unlock()
+	if childErrors.HasErrors() {
+		for _, err := range childErrors.Errors() {
+			e.errors = append(e.errors, fmt.Errorf(`%s: %s`, field, err))
+		}
+	}
 }
