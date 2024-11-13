@@ -17,6 +17,7 @@ const (
 	CANNOT_EXCEED                  = "cannot exceed"
 	CANNOT_EQUAL_ZERO              = "cannot less than or equal to zero"
 	MINIMUM_OF_ONE                 = "minimum of 1 %s is required"
+	CIRCULAR_DEPENDENCIES          = "invalid circular dependencies"
 )
 
 type ValidateFields struct{}
@@ -142,4 +143,8 @@ func (v *ValidateFields) isString(field any) bool {
 func (v *ValidateFields) isFloat64(field any) bool {
 	_, ok := field.(float64)
 	return ok
+}
+
+func (v *ValidateFields) CheckCircularDependencies(s string) error {
+	return fmt.Errorf("%s: %s", s, CIRCULAR_DEPENDENCIES)
 }
