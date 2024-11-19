@@ -1,6 +1,6 @@
 //go:build unit
 
-package entities_test
+package aggregates_test
 
 import (
 	"testing"
@@ -9,7 +9,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func Test_EntitiesSuite(t *testing.T) {
+func Test_AggregatesSuite(t *testing.T) {
 	suiteConfig, reporterConfig := GinkgoConfiguration()
 
 	suiteConfig.SkipStrings = []string{"SKIPPED", "PENDING", "NEVER-RUN", "SKIP"}
@@ -17,6 +17,6 @@ func Test_EntitiesSuite(t *testing.T) {
 	reporterConfig.Verbose = true
 
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Entities tests", suiteConfig, reporterConfig)
+	RunSpecs(t, "Aggregates tests", suiteConfig, reporterConfig)
 
 }

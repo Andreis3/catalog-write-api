@@ -1,15 +1,9 @@
-package aggregate
+package aggregates
 
 import (
 	"github.com/andreis3/catalog-write-api/internal/domain/entities"
 	"github.com/andreis3/catalog-write-api/internal/domain/errors"
 )
-
-type CreateProductBuilder struct {
-	product    *entities.Product
-	categories []*entities.Category
-	skus       []CreateSkus
-}
 
 type CreateProduct struct {
 	Product    *entities.Product
@@ -36,30 +30,30 @@ type CreateOffers struct {
 	Installments []*entities.Installment
 }
 
-func NewCreateProductBuilder() *CreateProductBuilder {
-	return &CreateProductBuilder{}
+func CreateProductBuilder() *CreateProduct {
+	return &CreateProduct{}
 }
 
-func (b CreateProductBuilder) WithProduct(product *entities.Product) CreateProductBuilder {
-	b.product = product
-	return b
+func (c *CreateProduct) WithProduct(product *entities.Product) *CreateProduct {
+	c.Product = product
+	return c
 }
 
-func (b CreateProductBuilder) WithCategories(categories []*entities.Category) CreateProductBuilder {
-	b.categories = categories
-	return b
+func (c *CreateProduct) WithCategories(categories []*entities.Category) *CreateProduct {
+	c.Categories = categories
+	return c
 }
 
-func (b CreateProductBuilder) WithSkus(skus []CreateSkus) CreateProductBuilder {
-	b.skus = skus
-	return b
+func (c *CreateProduct) WithSkus(skus []CreateSkus) *CreateProduct {
+	c.Skus = skus
+	return c
 }
 
-func (b CreateProductBuilder) Build() (*CreateProduct, *errors.EntityErrors) {
+func (c *CreateProduct) Build() (*CreateProduct, *errors.EntityErrors) {
 	product := &CreateProduct{
-		Product:    b.product,
-		Categories: b.categories,
-		Skus:       b.skus,
+		Product:    c.Product,
+		Categories: c.Categories,
+		Skus:       c.Skus,
 	}
 	if err := product.Validate(); err != nil {
 		return nil, err
@@ -85,19 +79,19 @@ func validate[T interface{ Validate() *errors.EntityErrors }](
 }
 
 func (c *CreateProduct) Validate() *errors.EntityErrors {
-	var validation *errors.EntityErrors
-	var validationFields errors.ValidateFields
+	validation := c.Product.EntityErrors
+	validationFields := c.Product.ValidateFields
 
 	if productValidation := c.Product.Validate(); productValidation != nil {
 		validation.Merge("product", productValidation)
 	}
-	validate(c.Categories, "categories", validation)
+	validate(c.Categories, "categories", &validation)
 	if c.checkCircularDependenciesCategories(c.Categories) {
 		validation.Add(validationFields.CheckCircularDependencies("categories"))
 	}
 	if len(c.Skus) == 0 {
 		validation.Add(validationFields.CheckMinimumOfOne(len(c.Skus), "skus"))
-		return validation
+		return &validation
 	}
 
 	for i, sku := range c.Skus {
@@ -109,7 +103,7 @@ func (c *CreateProduct) Validate() *errors.EntityErrors {
 		validateOffers(sku.Offers, skuValidation)
 		validation.MergeSlice(i, "skus", skuValidation)
 	}
-	return validation
+	return &validation
 }
 
 func validateSpecifications(specs []CreateSpecifications, validation *errors.EntityErrors) {
