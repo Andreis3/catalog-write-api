@@ -18,6 +18,7 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: SPECIFICATION_KEY", func() {
 				entity := entities.SpecificationKeyBuilder().
 					SetID(1).
 					SetKey("key").
+					SetAPIKeyID(1).
 					Build()
 
 				err := entity.Validate()
@@ -25,6 +26,9 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: SPECIFICATION_KEY", func() {
 				Expect(err.Errors()).To(BeNil())
 				Expect(err.HasErrors()).To(BeFalse())
 				Expect(err.ListErrors()).To(BeEmpty())
+				Expect(entity.GetID()).To(Equal(int64(1)))
+				Expect(entity.GetKey()).To(Equal("key"))
+				Expect(entity.GetAPIKeyID()).To(Equal(int64(1)))
 			})
 		})
 

@@ -1,6 +1,6 @@
 package entities
 
-import "github.com/andreis3/catalog-write-api/internal/domain/errors"
+import "github.com/andreis3/catalog-write-api/internal/domain/commons"
 
 const (
 	ACTIVE_SKU   = "active"
@@ -17,8 +17,8 @@ type Sku struct {
 	description string
 	gtin        string
 	status      string
-	errors.EntityErrors
-	errors.ValidateFields
+	commons.EntityErrors
+	commons.ValidateFields
 }
 
 func SkuBuilder() *Sku {
@@ -102,7 +102,7 @@ func (s *Sku) Build() *Sku {
 	return s
 }
 
-func (s *Sku) Validate() *errors.EntityErrors {
+func (s *Sku) Validate() *commons.EntityErrors {
 	s.Add(s.CheckEmptyField(s.externalID, "external_id"))
 	s.Add(s.CheckEmptyField(s.name, "name"))
 	s.Add(s.CheckEmptyField(s.description, "description"))

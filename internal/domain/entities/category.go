@@ -1,6 +1,6 @@
 package entities
 
-import "github.com/andreis3/catalog-write-api/internal/domain/errors"
+import "github.com/andreis3/catalog-write-api/internal/domain/commons"
 
 type Category struct {
 	id                int64
@@ -9,8 +9,8 @@ type Category struct {
 	categoryKey       string
 	description       string
 	parentCategoryKey string
-	errors.EntityErrors
-	errors.ValidateFields
+	commons.EntityErrors
+	commons.ValidateFields
 }
 
 func CategoryBuilder() *Category {
@@ -75,7 +75,7 @@ func (c *Category) Build() *Category {
 	return c
 }
 
-func (c *Category) Validate() *errors.EntityErrors {
+func (c *Category) Validate() *commons.EntityErrors {
 	c.Add(c.CheckEmptyField(c.categoryKey, "category_key"))
 	c.Add(c.CheckEmptyField(c.description, "description"))
 	return &c.EntityErrors

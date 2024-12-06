@@ -1,7 +1,7 @@
 package entities
 
 import (
-	"github.com/andreis3/catalog-write-api/internal/domain/errors"
+	"github.com/andreis3/catalog-write-api/internal/domain/commons"
 )
 
 const (
@@ -21,8 +21,8 @@ type Product struct {
 	status      string
 	brand       string
 	releaseDate string
-	errors.EntityErrors
-	errors.ValidateFields
+	commons.EntityErrors
+	commons.ValidateFields
 }
 
 func ProductBuilder() *Product {
@@ -114,7 +114,7 @@ func (p *Product) Build() *Product {
 	return p
 }
 
-func (p *Product) Validate() *errors.EntityErrors {
+func (p *Product) Validate() *commons.EntityErrors {
 	p.Add(p.CheckEmptyField(p.externalID, "external_id"))
 	p.Add(p.CheckEmptyField(p.apikey, "apikey"))
 	p.Add(p.CheckEmptyField(p.name, "name"))

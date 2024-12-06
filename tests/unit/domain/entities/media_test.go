@@ -22,6 +22,8 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: MEDIA", func() {
 					SetMediaType("image").
 					SetDescription("description").
 					SetIndex(1).
+					SetMediaTypeVideo().
+					SetMediaTypeImage().
 					Build()
 
 				err := entity.Validate()
@@ -29,6 +31,13 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: MEDIA", func() {
 				Expect(err.Errors()).To(BeNil())
 				Expect(err.HasErrors()).To(BeFalse())
 				Expect(err.ListErrors()).To(BeEmpty())
+				Expect(entity.GetID()).To(Equal(int64(1)))
+				Expect(entity.GetSkuID()).To(Equal(int64(1)))
+				Expect(entity.GetURL()).To(Equal("http://www.google.com"))
+				Expect(entity.GetMediaType()).To(Equal("image"))
+				Expect(entity.GetDescription()).To(Equal("description"))
+				Expect(entity.GetIndex()).To(Equal(1))
+				Expect(entity.GetMediaType()).To(Equal("image"))
 			})
 		})
 

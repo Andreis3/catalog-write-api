@@ -23,6 +23,8 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: PRODUCT", func() {
 					SetDescription("description").
 					SetGtin("gtin").
 					SetStatus("active").
+					SetStatusInactive().
+					SetStatusActive().
 					Build()
 
 				err := entity.Validate()
@@ -30,6 +32,13 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: PRODUCT", func() {
 				Expect(err.Errors()).To(BeNil())
 				Expect(err.HasErrors()).To(BeFalse())
 				Expect(err.ListErrors()).To(BeEmpty())
+				Expect(entity.GetID()).To(Equal(int64(1)))
+				Expect(entity.GetExternalID()).To(Equal("external-id"))
+				Expect(entity.GetProductID()).To(Equal(int64(1)))
+				Expect(entity.GetName()).To(Equal("name"))
+				Expect(entity.GetDescription()).To(Equal("description"))
+				Expect(entity.GetGtin()).To(Equal("gtin"))
+				Expect(entity.GetStatus()).To(Equal("active"))
 			})
 		})
 

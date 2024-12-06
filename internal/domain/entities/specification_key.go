@@ -1,13 +1,13 @@
 package entities
 
-import "github.com/andreis3/catalog-write-api/internal/domain/errors"
+import "github.com/andreis3/catalog-write-api/internal/domain/commons"
 
 type SpecificationKey struct {
 	id       int64
 	apiKeyID int64
 	key      string
-	errors.EntityErrors
-	errors.ValidateFields
+	commons.EntityErrors
+	commons.ValidateFields
 }
 
 func SpecificationKeyBuilder() *SpecificationKey {
@@ -45,7 +45,7 @@ func (s *SpecificationKey) Build() *SpecificationKey {
 	return s
 }
 
-func (s *SpecificationKey) Validate() *errors.EntityErrors {
+func (s *SpecificationKey) Validate() *commons.EntityErrors {
 	s.Add(s.CheckEmptyField(s.key, "key"))
 	s.Add(s.CheckMaxCharacters(s.key, "key", 10))
 	return &s.EntityErrors

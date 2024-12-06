@@ -1,7 +1,7 @@
 package entities
 
 import (
-	"github.com/andreis3/catalog-write-api/internal/domain/errors"
+	"github.com/andreis3/catalog-write-api/internal/domain/commons"
 )
 
 type Coordinate struct {
@@ -9,8 +9,8 @@ type Coordinate struct {
 	offersID  int64
 	latitude  float64
 	longitude float64
-	errors.EntityErrors
-	errors.ValidateFields
+	commons.EntityErrors
+	commons.ValidateFields
 }
 
 func CoordinateBuilder() *Coordinate {
@@ -57,7 +57,7 @@ func (c *Coordinate) Build() *Coordinate {
 	return c
 }
 
-func (c *Coordinate) Validate() *errors.EntityErrors {
+func (c *Coordinate) Validate() *commons.EntityErrors {
 	c.Add(c.CheckLatitudeRange(c.latitude))
 	c.Add(c.CheckLongitudeRange(c.longitude))
 	c.Add(c.CheckSetField(c.latitude, c.longitude, "latitude", "longitude"))

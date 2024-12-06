@@ -1,4 +1,4 @@
-package errors
+package commons
 
 import (
 	"fmt"
@@ -22,9 +22,13 @@ const (
 
 type ValidateFields struct{}
 
-func (v *ValidateFields) CheckIsValidStatus(field, name string, status []string) error {
-	if field != "" && !slices.Contains(status, field) {
-		return fmt.Errorf("%s: %s %s", name, STATUS_INVALID, status)
+func NewValidateFields() *ValidateFields {
+	return &ValidateFields{}
+}
+
+func (v *ValidateFields) CheckIsValidStatus(value, field string, status []string) error {
+	if value != "" && !slices.Contains(status, value) {
+		return fmt.Errorf("%s: %s %s", field, STATUS_INVALID, status)
 	}
 	return nil
 }
@@ -36,16 +40,16 @@ func (v *ValidateFields) CheckEmptyField(field string, name string) error {
 	return nil
 }
 
-func (v *ValidateFields) CheckMaxCharacters(field, name string, limit int) error {
-	if len(field) > limit {
-		return fmt.Errorf("%s: %s %d", name, LIMIT_CHARACTERS_NOT_MORE_THAN, limit)
+func (v *ValidateFields) CheckMaxCharacters(value, field string, limit int) error {
+	if len(value) > limit {
+		return fmt.Errorf("%s: %s %d", field, LIMIT_CHARACTERS_NOT_MORE_THAN, limit)
 	}
 	return nil
 }
 
-func (v *ValidateFields) CheckMinCharacters(field, name string, limit int) error {
-	if field != "" && len(field) < limit {
-		return fmt.Errorf("%s: %s %d", name, LIMIT_CHARACTERS_NOT_LESS_THAN, limit)
+func (v *ValidateFields) CheckMinCharacters(value, field string, limit int) error {
+	if value != "" && len(value) < limit {
+		return fmt.Errorf("%s: %s %d", field, LIMIT_CHARACTERS_NOT_LESS_THAN, limit)
 	}
 	return nil
 }
@@ -95,8 +99,6 @@ func (v *ValidateFields) CheckNegativeField(field any, name string) error {
 		if field.(int) < 0 {
 			return fmt.Errorf("%s: %s", name, CANNOT_NEGATIVE)
 		}
-	default:
-		return nil
 	}
 	return nil
 }
@@ -129,8 +131,6 @@ func (v *ValidateFields) CheckFieldEqualZero(field any, name string) error {
 		if field.(int) == 0 {
 			return fmt.Errorf("%s: %s", name, CANNOT_EQUAL_ZERO)
 		}
-	default:
-		return nil
 	}
 	return nil
 }

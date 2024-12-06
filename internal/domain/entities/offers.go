@@ -1,7 +1,7 @@
 package entities
 
 import (
-	"github.com/andreis3/catalog-write-api/internal/domain/errors"
+	"github.com/andreis3/catalog-write-api/internal/domain/commons"
 )
 
 const (
@@ -24,8 +24,8 @@ type Offer struct {
 	status       string
 	salesChannel string
 	seller       string
-	errors.EntityErrors
-	errors.ValidateFields
+	commons.EntityErrors
+	commons.ValidateFields
 }
 
 func OfferBuilder() *Offer {
@@ -150,7 +150,7 @@ func (o *Offer) Build() *Offer {
 	return o
 }
 
-func (o *Offer) Validate() *errors.EntityErrors {
+func (o *Offer) Validate() *commons.EntityErrors {
 	o.Add(o.CheckEmptyField(o.externalID, "external_id"))
 	o.Add(o.CheckEmptyField(o.name, "name"))
 	o.Add(o.CheckEmptyField(o.description, "description"))

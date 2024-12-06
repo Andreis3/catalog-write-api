@@ -1,13 +1,13 @@
 package entities
 
-import "github.com/andreis3/catalog-write-api/internal/domain/errors"
+import "github.com/andreis3/catalog-write-api/internal/domain/commons"
 
 type Tag struct {
 	id    int64
 	skuID int64
 	name  string
-	errors.EntityErrors
-	errors.ValidateFields
+	commons.EntityErrors
+	commons.ValidateFields
 }
 
 func TagBuilder() *Tag {
@@ -45,7 +45,7 @@ func (t *Tag) Build() *Tag {
 	return t
 }
 
-func (t *Tag) Validate() *errors.EntityErrors {
+func (t *Tag) Validate() *commons.EntityErrors {
 	t.Add(t.CheckEmptyField(t.name, "name"))
 	t.Add(t.CheckMaxCharacters(t.name, "name", 10))
 	return &t.EntityErrors

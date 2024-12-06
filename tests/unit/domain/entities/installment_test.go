@@ -27,6 +27,10 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: INSTALLMENT", func() {
 				Expect(err.Errors()).To(BeNil())
 				Expect(err.HasErrors()).To(BeFalse())
 				Expect(err.ListErrors()).To(BeEmpty())
+				Expect(entity.GetID()).To(Equal(int64(1)))
+				Expect(entity.GetOrderID()).To(Equal(int64(1)))
+				Expect(entity.GetCount()).To(Equal(1))
+				Expect(entity.GetPrice()).To(Equal(float64(1)))
 			})
 
 			It("should not return an error count and price equal 0", func() {

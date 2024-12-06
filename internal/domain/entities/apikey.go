@@ -1,7 +1,7 @@
 package entities
 
 import (
-	"github.com/andreis3/catalog-write-api/internal/domain/errors"
+	"github.com/andreis3/catalog-write-api/internal/domain/commons"
 )
 
 const (
@@ -15,8 +15,8 @@ type APIKey struct {
 	id     int64
 	name   string
 	status string
-	errors.EntityErrors
-	errors.ValidateFields
+	commons.EntityErrors
+	commons.ValidateFields
 }
 
 func ApiKeyBuilder() *APIKey {
@@ -64,7 +64,7 @@ func (a *APIKey) Build() *APIKey {
 	return a
 }
 
-func (a *APIKey) Validate() *errors.EntityErrors {
+func (a *APIKey) Validate() *commons.EntityErrors {
 	a.Add(a.CheckEmptyField(a.name, "name"))
 	a.Add(a.CheckMinCharacters(a.name, "name", 3))
 	a.Add(a.CheckEmptyField(a.status, "status"))

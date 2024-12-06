@@ -1,14 +1,14 @@
 package entities
 
-import "github.com/andreis3/catalog-write-api/internal/domain/errors"
+import "github.com/andreis3/catalog-write-api/internal/domain/commons"
 
 type Installment struct {
 	id      int64
 	orderID int64
 	count   int
 	price   float64
-	errors.EntityErrors
-	errors.ValidateFields
+	commons.EntityErrors
+	commons.ValidateFields
 }
 
 func InstallmentBuilder() *Installment {
@@ -55,7 +55,7 @@ func (i *Installment) Build() *Installment {
 	return i
 }
 
-func (i *Installment) Validate() *errors.EntityErrors {
+func (i *Installment) Validate() *commons.EntityErrors {
 	i.Add(i.CheckNegativeField(i.price, "price"))
 	i.Add(i.CheckNegativeField(i.count, "count"))
 	i.Add(i.CheckExceedField(i.count, "count", 12))

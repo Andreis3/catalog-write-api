@@ -1,7 +1,7 @@
 package entities
 
 import (
-	"github.com/andreis3/catalog-write-api/internal/domain/errors"
+	"github.com/andreis3/catalog-write-api/internal/domain/commons"
 )
 
 const (
@@ -18,8 +18,8 @@ type Media struct {
 	mediaType   string
 	description string
 	index       int
-	errors.EntityErrors
-	errors.ValidateFields
+	commons.EntityErrors
+	commons.ValidateFields
 }
 
 func MediaBuilder() *Media {
@@ -94,7 +94,7 @@ func (m *Media) Build() *Media {
 	return m
 }
 
-func (m *Media) Validate() *errors.EntityErrors {
+func (m *Media) Validate() *commons.EntityErrors {
 	m.Add(m.CheckEmptyField(m.url, "url"))
 	m.Add(m.CheckEmptyField(m.mediaType, "media_type"))
 	m.Add(m.CheckIsValidStatus(m.mediaType, "media_type", MediaType[:]))

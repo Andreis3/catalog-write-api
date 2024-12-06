@@ -25,6 +25,9 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: OFFERS", func() {
 					SetStatus("available").
 					SetSalesChannel("sales_channel").
 					SetSeller("seller").
+					SetStatusRemoved().
+					SetStatusUnavailable().
+					SetStatusAvailable().
 					Build()
 
 				err := entity.Validate()
@@ -32,6 +35,17 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: OFFERS", func() {
 				Expect(err.Errors()).To(BeNil())
 				Expect(err.HasErrors()).To(BeFalse())
 				Expect(err.ListErrors()).To(BeEmpty())
+				Expect(entity.GetID()).To(Equal(int64(1)))
+				Expect(entity.GetExternalID()).To(Equal("external_id"))
+				Expect(entity.GetSkuID()).To(Equal(int64(1)))
+				Expect(entity.GetName()).To(Equal("name"))
+				Expect(entity.GetDescription()).To(Equal("description"))
+				Expect(entity.GetPrice()).To(Equal(1.0))
+				Expect(entity.GetOldPrice()).To(Equal(1.0))
+				Expect(entity.GetStock()).To(Equal(int64(1)))
+				Expect(entity.GetStatus()).To(Equal("available"))
+				Expect(entity.GetSalesChannel()).To(Equal("sales_channel"))
+				Expect(entity.GetSeller()).To(Equal("seller"))
 			})
 		})
 

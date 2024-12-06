@@ -1,8 +1,8 @@
 package aggregates
 
 import (
+	"github.com/andreis3/catalog-write-api/internal/domain/commons"
 	"github.com/andreis3/catalog-write-api/internal/domain/entities"
-	"github.com/andreis3/catalog-write-api/internal/domain/errors"
 )
 
 type CreateProduct struct {
@@ -49,7 +49,7 @@ func (c *CreateProduct) WithSkus(skus []CreateSkus) *CreateProduct {
 	return c
 }
 
-func (c *CreateProduct) Build() (*CreateProduct, *errors.EntityErrors) {
+func (c *CreateProduct) Build() (*CreateProduct, *commons.EntityErrors) {
 	product := &CreateProduct{
 		Product:    c.Product,
 		Categories: c.Categories,
@@ -61,12 +61,12 @@ func (c *CreateProduct) Build() (*CreateProduct, *errors.EntityErrors) {
 	return product, nil
 }
 
-func validate[T interface{ Validate() *errors.EntityErrors }](
+func validate[T interface{ Validate() *commons.EntityErrors }](
 	items []T,
 	fieldName string,
-	parentValidation *errors.EntityErrors,
+	parentValidation *commons.EntityErrors,
 ) {
-	var validationFields errors.ValidateFields
+	var validationFields commons.ValidateFields
 	if len(items) == 0 {
 		parentValidation.Add(validationFields.CheckMinimumOfOne(len(items), fieldName))
 		return
@@ -78,7 +78,7 @@ func validate[T interface{ Validate() *errors.EntityErrors }](
 	}
 }
 
-func (c *CreateProduct) Validate() *errors.EntityErrors {
+func (c *CreateProduct) Validate() *commons.EntityErrors {
 	validation := c.Product.EntityErrors
 	validationFields := c.Product.ValidateFields
 
@@ -106,9 +106,9 @@ func (c *CreateProduct) Validate() *errors.EntityErrors {
 	return &validation
 }
 
-func validateSpecifications(specs []CreateSpecifications, validation *errors.EntityErrors) {
+func validateSpecifications(specs []CreateSpecifications, validation *commons.EntityErrors) {
 	for i, spec := range specs {
-		var specValidation *errors.EntityErrors
+		var specValidation *commons.EntityErrors
 		if keyValidation := spec.SpecificationKey.Validate(); keyValidation != nil {
 			specValidation.Merge("key", keyValidation)
 		}
@@ -119,7 +119,7 @@ func validateSpecifications(specs []CreateSpecifications, validation *errors.Ent
 	}
 }
 
-func validateOffers(offers []CreateOffers, validation *errors.EntityErrors) {
+func validateOffers(offers []CreateOffers, validation *commons.EntityErrors) {
 	for i, offer := range offers {
 		offerValidation := offer.Offers.Validate()
 

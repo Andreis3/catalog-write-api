@@ -18,6 +18,7 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: TAG", func() {
 				entity := entities.TagBuilder().
 					SetID(1).
 					SetName("name").
+					SetSkuID(1).
 					Build()
 
 				err := entity.Validate()
@@ -25,6 +26,9 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: TAG", func() {
 				Expect(err.Errors()).To(BeNil())
 				Expect(err.HasErrors()).To(BeFalse())
 				Expect(err.ListErrors()).To(BeEmpty())
+				Expect(entity.GetID()).To(Equal(int64(1)))
+				Expect(entity.GetName()).To(Equal("name"))
+				Expect(entity.GetSkuID()).To(Equal(int64(1)))
 			})
 		})
 
