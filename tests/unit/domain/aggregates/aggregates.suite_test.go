@@ -18,5 +18,4 @@ func Test_AggregatesSuite(t *testing.T) {
 
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Aggregates tests", suiteConfig, reporterConfig)
-
 }

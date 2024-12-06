@@ -24,6 +24,5 @@ var _ = Describe("INTERNAL :: DOMAIN :: AGGREGATES :: CREATE_PRODUCT", func() {
 				Expect(err.HasErrors()).To(BeTrue())
 			})
 		})
-
 	})
 })
