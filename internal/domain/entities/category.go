@@ -3,12 +3,12 @@ package entities
 import "github.com/andreis3/catalog-write-api/internal/domain/commons"
 
 type Category struct {
-	id                int64
-	apiKeyID          int64
-	parentID          int64
-	categoryKey       string
-	description       string
-	parentCategoryKey string
+	id          int64
+	apiKeyID    int64
+	parentID    int64
+	categoryKey string
+	description string
+	parent      string
 	commons.EntityErrors
 	commons.ValidateFields
 }
@@ -34,7 +34,7 @@ func (c *Category) GetParentID() int64 {
 }
 
 func (c *Category) GetParentCategoryKey() string {
-	return c.parentCategoryKey
+	return c.parent
 }
 
 func (c *Category) GetAPIKeyID() int64 {
@@ -62,7 +62,7 @@ func (c *Category) SetParentID(parentID int64) *Category {
 }
 
 func (c *Category) SetParentCategoryKey(parentCategoryKey string) *Category {
-	c.parentCategoryKey = parentCategoryKey
+	c.parent = parentCategoryKey
 	return c
 }
 

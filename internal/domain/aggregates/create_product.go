@@ -108,14 +108,14 @@ func (c *CreateProduct) Validate() *commons.EntityErrors {
 
 func validateSpecifications(specs []CreateSpecifications, validation *commons.EntityErrors) {
 	for i, spec := range specs {
-		var specValidation *commons.EntityErrors
+		specValidation := spec.SpecificationKey.EntityErrors
 		if keyValidation := spec.SpecificationKey.Validate(); keyValidation != nil {
 			specValidation.Merge("key", keyValidation)
 		}
 		if valueValidation := spec.SpecificationValue.Validate(); valueValidation != nil {
 			specValidation.Merge("value", valueValidation)
 		}
-		validation.MergeSlice(i, "specifications", specValidation)
+		validation.MergeSlice(i, "specifications", &specValidation)
 	}
 }
 

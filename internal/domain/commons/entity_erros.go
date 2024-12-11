@@ -11,6 +11,10 @@ type EntityErrors struct {
 	errors []error
 }
 
+func NewEntityErrors() *EntityErrors {
+	return &EntityErrors{}
+}
+
 func (e *EntityErrors) Add(err error) {
 	e.mu.Lock()
 	defer e.mu.Unlock()
