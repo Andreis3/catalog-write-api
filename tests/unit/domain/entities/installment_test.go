@@ -17,7 +17,7 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: INSTALLMENT", func() {
 			It("should not return an error count and price more 0", func() {
 				entity := entities.InstallmentBuilder().
 					SetID(1).
-					SetOrderID(1).
+					SetOfferID(1).
 					SetCount(1).
 					SetPrice(1).
 					Build()
@@ -28,7 +28,7 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: INSTALLMENT", func() {
 				Expect(err.HasErrors()).To(BeFalse())
 				Expect(err.ListErrors()).To(BeEmpty())
 				Expect(entity.GetID()).To(Equal(int64(1)))
-				Expect(entity.GetOrderID()).To(Equal(int64(1)))
+				Expect(entity.GetOfferID()).To(Equal(int64(1)))
 				Expect(entity.GetCount()).To(Equal(1))
 				Expect(entity.GetPrice()).To(Equal(float64(1)))
 			})
@@ -36,7 +36,7 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: INSTALLMENT", func() {
 			It("should not return an error count and price equal 0", func() {
 				entity := entities.InstallmentBuilder().
 					SetID(1).
-					SetOrderID(1).
+					SetOfferID(1).
 					SetCount(0).
 					SetPrice(0).
 					Build()
@@ -52,7 +52,7 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: INSTALLMENT", func() {
 			It("should return an error count and price less than 0", func() {
 				entity := entities.InstallmentBuilder().
 					SetID(1).
-					SetOrderID(1).
+					SetOfferID(1).
 					SetCount(-1).
 					SetPrice(-1).
 					Build()
@@ -71,7 +71,7 @@ var _ = Describe("INTERNAL :: DOMAIN :: ENTITIES :: INSTALLMENT", func() {
 			It("should return an error when count is more than 12", func() {
 				entity := entities.InstallmentBuilder().
 					SetID(1).
-					SetOrderID(1).
+					SetOfferID(1).
 					SetCount(13).
 					SetPrice(1).
 					Build()

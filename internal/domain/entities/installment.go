@@ -4,7 +4,7 @@ import "github.com/andreis3/catalog-write-api/internal/domain/commons"
 
 type Installment struct {
 	id      int64
-	orderID int64
+	offerID int64
 	count   int
 	price   float64
 	commons.EntityErrors
@@ -19,8 +19,8 @@ func (i *Installment) GetID() int64 {
 	return i.id
 }
 
-func (i *Installment) GetOrderID() int64 {
-	return i.orderID
+func (i *Installment) GetOfferID() int64 {
+	return i.offerID
 }
 
 func (i *Installment) GetCount() int {
@@ -36,8 +36,8 @@ func (i *Installment) SetID(id int64) *Installment {
 	return i
 }
 
-func (i *Installment) SetOrderID(orderID int64) *Installment {
-	i.orderID = orderID
+func (i *Installment) SetOfferID(offerID int64) *Installment {
+	i.offerID = offerID
 	return i
 }
 
